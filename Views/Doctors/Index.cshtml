@@ -1,0 +1,67 @@
+
+@model IEnumerable<Hospital.Models.Doctor>
+@* Receive the list of doctors from the controller. *@
+
+@{
+    ViewData["Title"] = "Hospital Doctors";
+}
+
+
+<h1>Hospital Doctors</h1> @* Display the page heading. *@
+
+@if (ViewBag.PatientName != null) @* Check whether a patient cookie exists. *@
+{
+    <p>Welcome back, @ViewBag.PatientName!</p> @* Display the saved patient name. *@
+}
+
+@if (ViewBag.SelectedSpecialization != null) @* Check whether a specialization is saved. *@
+{
+    <p>Selected specialization: <strong>@ViewBag.SelectedSpecialization</strong></p> @* Display session data. *@
+}
+
+<h3>Select a specialization</h3> @* Introduce the session form. *@
+<form asp-action="SelectSpecialization" method="post"> @* Submit the specialization to the controller. *@
+    @Html.AntiForgeryToken() @* Add a CSRF protection token. *@
+    <select name="specialization" class="form-select mb-3"> @* Provide specialization choices. *@
+        <option value="Cardiology">Cardiology</option>
+        <option value="Neurology">Neurology</option>
+        <option value="Orthopedics">Orthopedics</option>
+        <option value="Dermatology">Dermatology</option>
+    </select>
+    <button type="submit" class="btn btn-primary">Save Specialization</button> @* Save the selection in session. *@
+</form>
+
+<hr /> @* Separate the selection form from the doctor list. *@
+
+<table class="table table-bordered table-striped"> @* Display doctors in a table. *@
+    <thead>
+        <tr>
+            <th>Doctor ID</th>
+            <th>Doctor Name</th>
+            <th>Specialization</th>
+            <th>Experience</th>
+            <th>Consultation Fee</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var doctor in Model) @* Iterate over every doctor. *@
+        {
+            <tr>
+                <td>@doctor.DoctorId</td>
+                <td>@doctor.DoctorName</td>
+                <td>@doctor.Specialization</td>
+                <td>@doctor.Experience years</td>
+                <td>₹@doctor.ConsultationFee.ToString("N2")</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@doctor.DoctorId"
+                       class="btn btn-info btn-sm">Details</a> @* Pass the doctor ID in the query string. *@
+                    <a asp-action="Appointment" asp-route-id="@doctor.DoctorId"
+                       class="btn btn-success btn-sm">Book Appointment</a> @* Open the appointment form. *@
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<p><a asp-controller="Posts" asp-action="Index" class="btn btn-secondary">View API Posts</a></p> @* Navigate to the posts page. *@

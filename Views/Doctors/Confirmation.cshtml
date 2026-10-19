@@ -1,0 +1,38 @@
+
+@{
+    // Set the title displayed in the browser.
+    ViewData["Title"] = "Appointment Confirmation";
+}
+
+<div class="container mt-5">
+    @* Display the appointment confirmation card. *@
+    <div class="card shadow p-4 text-center">
+
+        @* Display the success icon. *@
+        <h1 class="text-success">✓ Appointment Request Received!</h1>
+
+        @* Display the confirmation message passed by the controller. *@
+        @if (TempData["Message"] != null)
+        {
+            <div class="alert alert-success mt-3">
+                @TempData["Message"]
+            </div>
+        }
+
+        @* Explain the status of the appointment request. *@
+        <p>Your appointment request has been submitted successfully.</p>
+
+        <p class="text-muted">
+            This is a demonstration application. The appointment
+            has not been permanently saved to a database.
+        </p>
+
+        @* Provide a link to return to the doctor list. *@
+        <a asp-controller="Doctors"
+           asp-action="Index"
+           class="btn btn-primary mt-3">
+            Back to Doctors
+        </a>
+
+    </div>
+</div>

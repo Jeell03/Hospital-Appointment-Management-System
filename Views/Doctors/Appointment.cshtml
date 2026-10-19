@@ -1,0 +1,38 @@
+
+@model AppointmentViewModel 
+@* Receive the appointment form model. *@
+
+@{
+    ViewData["Title"] = "Request Appointment"; // Set the page title.
+}
+
+<h1>Request an Appointment</h1> @* Display the page heading. *@
+
+<form asp-action="Appointment" method="post"> @* Submit the appointment to the controller. *@
+    @Html.AntiForgeryToken() @* Add a CSRF protection token. *@
+
+    <input type="hidden" asp-for="DoctorId" /> @* Submit DoctorId without displaying an editable field. *@
+    <input type="hidden" asp-for="Specialization" /> @* Submit the selected doctor's specialization. *@
+
+    <div class="mb-3"> @* Group the patient name field. *@
+        <label asp-for="PatientName" class="form-label">Patient Name</label> @* Display the field label. *@
+        <input asp-for="PatientName" class="form-control" placeholder="Enter your full name" /> @* Enter the patient name. *@
+        <span asp-validation-for="PatientName" class="text-danger"></span> @* Display name validation errors. *@
+    </div>
+
+    <div class="mb-3"> @* Group the appointment date field. *@
+        <label asp-for="AppointmentDate" class="form-label">Appointment Date</label> @* Display the date label. *@
+        <input asp-for="AppointmentDate" type="date" class="form-control" /> @* Choose the appointment date. *@
+        <span asp-validation-for="AppointmentDate" class="text-danger"></span> @* Display date validation errors. *@
+    </div>
+
+    <p><strong>Doctor ID:</strong> @Model.DoctorId</p> @* Show the doctor ID for reference. *@
+    <p><strong>Specialization:</strong> @Model.Specialization</p> @* Show the selected specialization. *@
+
+    <button type="submit" class="btn btn-primary">Submit Appointment Request</button> @* Submit the form. *@
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a> @* Return to the doctor list. *@
+</form>
+
+@section Scripts { @* Load client-side validation scripts. *@
+    <partial name="_ValidationScriptsPartial" /> @* Enable unobtrusive form validation. *@
+}

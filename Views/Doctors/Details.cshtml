@@ -1,0 +1,27 @@
+@model Hospital.Models.Doctor
+@* Receive one doctor from the controller. *@
+
+@using Hospital.Models
+
+@{
+    ViewData["Title"] = "Doctor Details";
+}
+
+<h1>Doctor Details</h1> @* Display the page heading. *@
+
+<div class="card p-4 shadow-sm"> @* Group the doctor's details together. *@
+    <h3>@Model.DoctorName</h3> @* Display the doctor name. *@
+    <p><strong>Doctor ID:</strong> @Model.DoctorId</p> @* Display the unique ID. *@
+    <p><strong>Specialization:</strong> @Model.Specialization</p> @* Display the specialization. *@
+    <p><strong>Experience:</strong> @Model.Experience years</p> @* Display experience. *@
+    <p><strong>Consultation Fee:</strong> ₹@Model.ConsultationFee.ToString("N2")</p> @* Display the original fee. *@
+
+    <hr /> @* Separate the original fee from the total. *@
+
+    <p><strong>Service Charge:</strong> ₹100.00</p> @* Display the fixed service charge. *@
+    <h4>Total Consultation Charge: ₹@Model.CalculateTotalCharge().ToString("N2")</h4> @* Call the extension method. *@
+
+    <a asp-action="Appointment" asp-route-id="@Model.DoctorId"
+       class="btn btn-success">Request Appointment</a> @* Pass DoctorId to the appointment form. *@
+    <a asp-action="Index" class="btn btn-secondary mt-2">Back to Doctors</a> @* Return to the list. *@
+</div>
